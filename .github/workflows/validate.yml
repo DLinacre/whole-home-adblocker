@@ -1,0 +1,28 @@
+name: Validate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint:
+    name: Lint installer & config
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Lint YAML config templates
+        run: |
+          python3 -m pip install --quiet yamllint
+          python3 -m yamllint -c .yamllint.yml AdGuardHome.template.yaml docker-compose.yml
+
+      - name: PSScriptAnalyzer (wizard.ps1)
+        shell: pwsh
+        run: |
+          Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
+          Install-Module PSScriptAnalyzer -Scope CurrentUser -Force
+          $issues = Invoke-ScriptAnalyzer -Path ./wizard.ps1
+          $issues | Format-Table RuleName, Severity, Line, Message -AutoSize
+          if ($issues | Where-Object { $_.Severity -eq 'Error' }) { exit 1 }

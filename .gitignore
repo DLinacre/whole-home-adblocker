@@ -1,0 +1,14 @@
+# Generated at install time — never commit user data or secrets
+adguard/
+dashboard-password.txt
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+*.lnk
+
+# Logs & temp
+*.log
+*.tmp
+~$*

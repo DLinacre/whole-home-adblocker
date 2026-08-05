@@ -1,0 +1,17 @@
+# Optional power-user alternative to Install.bat (the wizard is easier).
+# Run Install.bat FIRST so the config is created, then in this folder:
+#     docker compose up -d
+# Dashboard: http://localhost
+
+services:
+  adguardhome:
+    image: adguard/adguardhome:latest
+    container_name: adguardhome
+    restart: unless-stopped          # starts automatically with Docker / your PC
+    ports:
+      - "53:53/tcp"                  # DNS (the actual ad blocking)
+      - "53:53/udp"
+      - "80:80/tcp"                  # Dashboard / HUD
+    volumes:
+      - ./adguard/work:/opt/adguardhome/work
+      - ./adguard/conf:/opt/adguardhome/conf
