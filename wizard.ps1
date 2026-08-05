@@ -102,6 +102,13 @@ function New-DesktopShortcut([string]$Url) {
     } catch { }  # cosmetic extra - never fatal
 }
 
+function Register-WeeklyUpdate {
+    # Silent Sunday 03:00 self-update. Runs as the current user, keeps settings.
+    $action  = New-ScheduledTaskAction -Execute 'powershell.exe' -Argument "-NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File `"$Root\wizard.ps1`" -Update"
+    $trigger = New-ScheduledTaskTrigger -Weekly -DaysOfWeek Sunday -At 03:00
+    Register-ScheduledTask -TaskName 'WholeHomeAdBlocker-Update' -Action $action -Trigger $trigger -Description 'Weekly update of the whole-home ad blocker (keeps settings and stats).' -Force | Out-Null
+}
+
 # ------------------------------------------------------------ config builder
 function Set-YamlSection([string]$Yaml, [string]$Name, [string[]]$Entries) {
     $body = ($Entries | ForEach-Object { "    - $_" }) -join "`r`n"
@@ -169,7 +176,8 @@ if (-not $Update) {
     Write-Host '  else on this PC already runs a website.'
     Write-Host ''
     $p = Read-Host '  Dashboard port [80]'
-    if ($p -and [int]::TryParse($p, [ref]($n = 0)) -and $n -ge 1 -and $n -le 65535) { $DashboardPort = $n }
+    $n = 0
+    if ($p -and [int]::TryParse($p, [ref]$n) -and $n -ge 1 -and $n -le 65535) { $DashboardPort = $n }
 
     # ---- Question 2: DNS provider
     Write-Header 'Question 2 of 3 - Private DNS provider'
@@ -271,6 +279,18 @@ if ($LASTEXITCODE -ne 0 -or $running -ne 'yes') {
     exit 1
 }
 Write-Ok 'Ad blocker is live.'
+
+if (-not $Update) {
+    $u = Read-Host '  Optional: automatic weekly updates (Sunday 03:00, silent)? [Y/n]'
+    if ($u -notmatch '^[Nn]') {
+        try {
+            Register-WeeklyUpdate
+            Write-Ok 'Weekly auto-update scheduled (task: WholeHomeAdBlocker-Update).'
+        } catch {
+            Write-Warn 'Could not create the scheduled task - Update.bat works anytime instead.'
+        }
+    }
+}
 
 # -------------------------------------------------------------------- finish
 $portSuffix = if ($DashboardPort -eq 80) { '' } else { ":$DashboardPort" }

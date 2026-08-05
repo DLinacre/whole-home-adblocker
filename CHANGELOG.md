@@ -17,6 +17,11 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   plus optional **AdGuard Family** filtering.
 - One-click **Update.bat** and **Uninstall.bat**; idempotent re-installs that
   keep settings and stats.
+- 🗓️ Optional **weekly automatic updates** via Windows Scheduled Task (wizard prompt).
+- `.gitattributes` enforcing **CRLF line endings** for `.bat`/`.ps1` — cmd.exe-safe
+  installs straight from GitHub ZIP downloads.
+- Wizard syntax-verified with real PowerShell (`Parser::ParseFile`) and the
+  config-generation engine unit-tested against the shipped template.
 - `docs/ROUTERS.md` — whole-house rollout guide with UK ISP (Sky/BT/Virgin)
   workarounds and AdGuard Home DHCP takeover.
 - Community health files: LICENSE (MIT), CONTRIBUTING, CODE_OF_CONDUCT,

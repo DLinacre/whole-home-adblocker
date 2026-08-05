@@ -10,6 +10,7 @@
 </p>
 
 <p align="center">
+  <a href="https://github.com/DLinacre/whole-home-adblocker/releases"><img alt="Release" src="https://img.shields.io/github/v/release/DLinacre/whole-home-adblocker"></a>
   <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-yellow.svg"></a>
   <img alt="Platform" src="https://img.shields.io/badge/platform-Windows%2010%20%2F%2011-blue">
   <img alt="Docker" src="https://img.shields.io/badge/powered%20by-Docker%20%2B%20AdGuard%20Home-2496ED">
@@ -35,6 +36,8 @@ can do it in about 10 minutes:
   ISP can't snoop on lookups; optional **Family mode** (adult-content blocking)
 - 🔁 **One-click update & uninstall** — and re-running the installer never wipes
   your settings or statistics
+- 🗓️ **Optional automatic weekly updates** — one wizard question creates a silent
+  scheduled task, so blocking stays current with zero maintenance
 - 🇬🇧 **UK-router friendly docs** — includes the workaround for Sky, BT and
   Virgin Media hubs that block custom DNS ([docs/ROUTERS.md](docs/ROUTERS.md))
 

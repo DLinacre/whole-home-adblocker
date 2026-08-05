@@ -1,0 +1,11 @@
+# Windows installer files MUST stay CRLF — cmd.exe label/goto parsing and
+# PowerShell 5.1 are happiest with Windows line endings, and GitHub ZIP
+# downloads serve blobs with these attributes applied.
+* text=auto
+*.bat  text eol=crlf
+*.cmd  text eol=crlf
+*.ps1  text eol=crlf
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.webp binary
